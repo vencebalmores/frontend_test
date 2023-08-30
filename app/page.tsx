@@ -17,10 +17,14 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const data = await fetch('https://jsonplaceholder.typicode.com/users', {method: 'GET'});
-      const userData = await data.json();
+      const jsonPlaceHolderData = await fetch('https://jsonplaceholder.typicode.com/users', {method: 'GET'});
+      const randomAPIData = await fetch('https://random-data-api.com/api/v2/users?size=10', {method: 'GET'});
 
-      setUsers(userData);
+      const userDataOne = await jsonPlaceHolderData.json() ?? [];
+      const userDataTwo = await randomAPIData.json() ?? [];
+      const userDataFinal = [...userDataOne, ...userDataTwo];
+
+      setUsers(userDataFinal);
     };
 
     fetchAPI();

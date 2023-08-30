@@ -12,12 +12,13 @@ import {
 import Modal from "./modal";
 
 import { User } from "./types/user";
+import { createUsersDataBasedOnAPI } from "./helpers/helper-functions";
 
 export type GalleryProps = {
   users: User[];
 };
 const Gallery = ({ users }: GalleryProps) => {
-  const [usersList, setUsersList] = useState(users);
+  const [usersList, setUsersList] = useState(createUsersDataBasedOnAPI(users));
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
