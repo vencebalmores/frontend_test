@@ -129,6 +129,11 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+  .main {
+    padding: 2rem;
+    max-width: 84%;
+  }
+
   .content {
     padding: 4rem;
   }
@@ -206,6 +211,11 @@
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
+  .main {
+    padding: 2rem;
+    max-width: 93%;
+  }
+
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
