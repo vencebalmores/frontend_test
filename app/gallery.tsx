@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
@@ -21,6 +21,7 @@ const Gallery = ({ users }: GalleryProps) => {
   const [usersList, setUsersList] = useState(users);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortingDetails, setSortingDetails] = useState({sortBy: '', direction: 'ascending'});
 
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
@@ -36,11 +37,51 @@ const Gallery = ({ users }: GalleryProps) => {
     setIsModalOpen(false);
   };
 
+  const sortObjects = (a: any, b: any) => {
+    let comparison = 0;
+
+    if (a > b) {
+        comparison = 1;
+    } else {
+        comparison = -1;
+    }
+
+    return comparison
+  }
+
+  const handleUsersSort = () => {
+    const {sortBy, direction} = sortingDetails;
+
+    const isCompany = sortBy === 'company';
+            const usersListCopy = [...usersList];
+
+            usersListCopy.sort((a,b) => {
+                const firstValue = isCompany ? a.company.name : a[sortBy];
+                const secondValue = isCompany ? b.company.name : b[sortBy];
+
+                return direction === 'descending' ? sortObjects(secondValue, firstValue) : sortObjects(firstValue, secondValue);
+            });
+
+            setUsersList(usersListCopy)
+  };
+
+  const handleSortingDetails = (value: string, isSortBy: bool) => {
+    setSortingDetails(prevValue => {
+        const key = isSortBy ? 'sortBy' : 'direction';
+
+        return {...prevValue, [key]: value}
+    })
+  };
+
+  useEffect(() => {
+    sortingDetails.sortBy && handleUsersSort();
+  }, [sortingDetails.sortBy, sortingDetails.direction]);
+
   return (
     <div className="user-gallery">
       <div className="heading">
         <h1 className="title">Users</h1>
-        <Controls />
+        <Controls setSortingDetails={(value, isSortBy) => handleSortingDetails(value, isSortBy)} />
       </div>
       <div className="items">
         {usersList.map((user, index) => (

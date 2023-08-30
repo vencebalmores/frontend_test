@@ -1,6 +1,10 @@
 import Select from "react-select";
 
-const Controls = () => {
+export type ControlsProps = {
+  setSortingDetails: (param: any, isSortBy: bool) => object;
+};
+
+const Controls = ({setSortingDetails}: ControlsProps) => {
   const fieldOptions = [
     { label: "Name", value: "name" },
     { label: "Company", value: "company" },
@@ -17,7 +21,12 @@ const Controls = () => {
         <label htmlFor="sort-field" className="label">
           Sort Field
         </label>
-        <Select options={fieldOptions} inputId="sort-field" className="input" />
+        <Select
+            options={fieldOptions}
+            inputId="sort-field"
+            className="input"
+            onChange={e => setSortingDetails(e.value, true)}
+        />
       </div>
       <div className="form-group group">
         <label htmlFor="sort-direction" className="label">
@@ -27,6 +36,7 @@ const Controls = () => {
           options={directionOptions}
           inputId="sort-direction"
           className="input"
+          onChange={e => setSortingDetails(e.value, false)}
         />
       </div>
     </div>
